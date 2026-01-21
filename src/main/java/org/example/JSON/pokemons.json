@@ -12,5 +12,12 @@
     "nivel": 18,
     "habilidades": ["Pistola Agua", "Cabezazo", "Refugio"],
     "idAdestrador": "ID_DEL_ADESTRADOR_AQUI"
+  },
+  {
+    "nome": "Charmander",
+    "tipo": ["Fuego"],
+    "nivel": 12,
+    "habilidades": ["Ascuas", "Arañazo", "Gruñido"],
+    "idAdestrador": "ID_DEL_ADESTRADOR_AQUI"
   }
 ]

@@ -1,14 +1,15 @@
 package org.example.controller;
 
-import org.example.model.Adestrador;
 import org.example.model.Pokemon;
+import org.example.model.Adestrador;
 import org.example.service.PokemonService;
-import org.example.util.JsonImporter;
+import org.example.service.JsonImporter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class RestPokemon {
     private JsonImporter jsonImporter;
 
     @PostMapping("/gardar")
-    public ResponseEntity<Pokemon> gardar(@RequestBody Pokemon pokemon) {
+    public ResponseEntity<Pokemon> gardarDocumento(@RequestBody Pokemon pokemon) {
         pokemonService.crearPokemon(pokemon);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -34,6 +35,41 @@ public class RestPokemon {
     public ResponseEntity<List<Pokemon>> listarColeccion() {
         List<Pokemon> pokemons = pokemonService.buscarPokemons();
         return new ResponseEntity<>(pokemons, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/borrarTodos")
+    public ResponseEntity<Pokemon> borrarColeccion() {
+        pokemonService.borrarTodos();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/importar")
+    public ResponseEntity<String> importar(@RequestParam String rutaArchivo) {
+        try {
+            jsonImporter.importarPokemonsDesdeJson(rutaArchivo);
+            return ResponseEntity.ok("Pokémons importados correctamente desde: " + rutaArchivo);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al importar desde " + rutaArchivo + ": " + e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/exportar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<byte[]> exportarPokemon() throws JsonProcessingException {
+        List<Pokemon> pokemons = pokemonService.buscarPokemons();
+
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] jsonBytes = mapper.writeValueAsBytes(pokemons);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentDisposition(
+                ContentDisposition.attachment()
+                        .filename("Pokemons.json")
+                        .build()
+        );
+
+        return new ResponseEntity<>(jsonBytes, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -58,17 +94,6 @@ public class RestPokemon {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(a);
-    }
-
-    @PostMapping("/importarDesdeJson")
-    public ResponseEntity<String> importarDesdeJson(@RequestParam String filePath) {
-        try {
-            jsonImporter.importarPokemonsDesdeJson(filePath);
-            return ResponseEntity.ok("Pokémons importados desde JSON correctamente");
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al importar desde JSON: " + e.getMessage());
-        }
     }
 
     @PostMapping("/insertarDirectamente")

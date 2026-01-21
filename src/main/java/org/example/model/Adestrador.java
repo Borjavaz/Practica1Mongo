@@ -13,7 +13,7 @@ public class Adestrador {
     private int idade;
     private String cidade;
 
-    // ---- GETTERS & SETTERS ----
+    // getters y setters
 
     public String getId() {
         return id;

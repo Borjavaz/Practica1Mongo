@@ -8,5 +8,10 @@
     "nome": "Gary Oak",
     "idade": 11,
     "cidade": "Pallet Town"
+  },
+  {
+    "nome": "Ash Ketchum",
+    "idade": 10,
+    "cidade": "Pueblo Paleta"
   }
 ]

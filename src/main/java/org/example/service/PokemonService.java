@@ -41,4 +41,8 @@ public class PokemonService {
 
         return adestradorRepo.findById(pokemon.getIdAdestrador()).orElse(null);
     }
+
+    public void borrarTodos() {
+        pokemonRepo.deleteAll();
+    }
 }

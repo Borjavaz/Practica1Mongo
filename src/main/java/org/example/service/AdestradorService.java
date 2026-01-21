@@ -26,4 +26,8 @@ public class AdestradorService {
     public List<Adestrador> buscarAdestradores() {
         return adestradorRepo.findAll();
     }
+
+    public void borrarTodos() {
+        adestradorRepo.deleteAll();
+    }
 }
