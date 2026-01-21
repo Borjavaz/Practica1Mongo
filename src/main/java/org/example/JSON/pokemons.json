@@ -1,0 +1,16 @@
+[
+  {
+    "nome": "Bulbasaur",
+    "tipo": ["Planta", "Veneno"],
+    "nivel": 15,
+    "habilidades": ["Latigazo", "Drenadoras", "Rayo Solar"],
+    "idAdestrador": "ID_DEL_ADESTRADOR_AQUI"
+  },
+  {
+    "nome": "Squirtle",
+    "tipo": ["Agua"],
+    "nivel": 18,
+    "habilidades": ["Pistola Agua", "Cabezazo", "Refugio"],
+    "idAdestrador": "ID_DEL_ADESTRADOR_AQUI"
+  }
+]
